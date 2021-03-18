@@ -41,7 +41,7 @@
 
   - name: Pause for 10 secs so the next command won't fail - this could be prettier, apply some sort of when-conditional
     pause:
-      seconds: 10
+      seconds: 3
 
 
 
@@ -49,7 +49,10 @@
     ansible.builtin.command: "VBoxManage modifyvm k8s-node-{{item.ansible_facts.r_digits }} --nic2 bridged --bridgeadapter2 en0"
     become: yes
     with_items: "{{ no_list.results }}"
-
+    retries: 3
+    delay: 3
+    register: result
+    until: result.rc == 0
 
 
   - name: Start new VM
