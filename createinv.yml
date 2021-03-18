@@ -1,0 +1,34 @@
+---
+
+- name: Generate inventory
+  hosts: localhost
+  connection: local
+  tasks:
+
+
+
+  - name: Multipass list to vars
+    shell: 'multipass list --format json'
+    register: mjsonreturn
+
+
+
+  - name: Set a var from mjsonreturn
+    ansible.builtin.set_fact:
+      mjsonlist: "{{ mjsonreturn.stdout | from_json }}"
+
+
+
+  - name: Print stuff from mjsonlist
+    debug: msg="{{ mjsonlist | json_query(jmesquery) }}"
+    vars:
+      jmesquery: "list[].name"
+    register: hostnames
+
+
+
+  - name: Write inventory to file (watch out, relative paths)
+    ansible.builtin.template:
+      src: templates/dyninv.j2
+      dest: inventory/dyninv.json
+      mode: '0644'

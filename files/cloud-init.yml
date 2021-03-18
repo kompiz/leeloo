@@ -1,0 +1,13 @@
+users:
+  - name: mjau
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    lock_passwd: true
+    ssh_authorized_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXJjlAEv3raZ6bujhCuT2eS3Zji+xKZLW6bkMFRLxJ/0Vq14/M3YTkl3nCvO0swSzUv2w9gab93odR7X8uDqwk4adzIC0iTIiVYdgUVX2ZbXDKxjO4U73IWIrHMR4q54uvH8R771ZdbhwxmrHmbAx9PjVq7lAWjgxzP6m6jpi7irL61nqEOn5lSO2G8okluG8aumw5bSvujMwYGKliXyzoQIIEZNES7aO9r+fTzriwHfGc9mdAU6dX1Yy1oBS9evS8L5OUNr3CCiFawn15W8jw8BEnpKfWeOQIyhjHBzYWskoh/lnNcByZ+6ecLoGFiPl8lg6vsg+5QvEnX0irMhHeT1GXXl8XKq1iybG/aBUnsqPSa904YXYecZnY5gbjbSo6yJQLhCc3HhSGWrovb5X77W0xBogS4tkpZ9+9cpoppTaalD2JZqkBRVSu60EwmS+uQr7EPzcrorVZJLGPMmbmGPnfWHVWDJO7vjh+0tRvzJL1fuFzwXx3E5PblWWR5uk= mjau@nostromo
+package_update: true
+
+packages:
+ - curl
+ - avahi-daemon
+ - docker
