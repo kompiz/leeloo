@@ -1,5 +1,5 @@
 ---
-- name: Create VM and do some stuff - an ugly hack but no seemingly no multipass module exists
+- name: Create a bunch of vm's
   hosts: localhost
   connection: local
   gather_facts: false
@@ -13,7 +13,7 @@
 
 
 
-  - name: Ask Multipass to create VM, using external variable 
+  - name: Create a number of vm's depending on ext var nodes 
     ansible.builtin.shell: multipass launch --name k8s-node-{{ item.ansible_facts.r_digits }} --cloud-init files/cloud-init.yml
     with_items: "{{ no_list.results }}"
     async: 600
@@ -27,21 +27,21 @@
       jid: "{{ item.ansible_job_id }}"
     register: jobs
     until: jobs.finished
-    delay: 3  # Check every 5 seconds. Adjust as you like.
-    retries: 50  # Retry up to 10 times. Adjust as needed.
+    delay: 3 
+    retries: 50 
     with_items: "{{ create_vm_status.results }}"
 
 
 
-  - name: Stop new VM
+  - name: Stop new so we can change network mode to bridged
     ansible.builtin.command: "multipass stop k8s-node-{{item.ansible_facts.r_digits }}"
     with_items: "{{ no_list.results }}"
 
 
 
-  - name: Pause for 10 secs so the next command won't fail - this could be prettier, apply some sort of when-conditional
+  - name: Pause for a bit so VboxManage doesn't get cranky
     pause:
-      seconds: 3
+      seconds: 1
 
 
 
@@ -55,6 +55,7 @@
     until: result.rc == 0
 
 
+
   - name: Start new VM
     ansible.builtin.command: "multipass start k8s-node-{{item.ansible_facts.r_digits }}"
     become: yes
@@ -63,11 +64,13 @@
 
 
 
-  - name: Enter bridge conf
+  - name: Put bridge conf into vm's
     ansible.builtin.raw:  multipass exec -- k8s-node-{{item.ansible_facts.r_digits }} sudo bash -c "cat > /etc/netplan/60-bridge.yaml" < files/bridge.conf
     with_items: "{{ no_list.results }}"
 
-  - name: Apply bridge configuration
+
+
+  - name: Apply bridge conf
     ansible.builtin.command: "multipass exec k8s-node-{{item.ansible_facts.r_digits }} sudo netplan apply"
     with_items: "{{ no_list.results }}"
 
