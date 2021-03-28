@@ -1,0 +1,9 @@
+---
+- name: Create a bunch of vm's
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    node_role: node 
+  roles:
+    - createvm

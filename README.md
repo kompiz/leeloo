@@ -2,7 +2,9 @@
 
 Or: a poor man's vagrant.
 
-Createvm: takes an external variable, 'nodes', which defines how many vm's you'd like to create.
+```$ ansible-playbook create-node.yml -K -e nodes=1``` creates one node. ```create-master.yml``` (for now) just creates a node with a different hostname.
+
+
 
 Createinv: it creates an inventory for ansible, consisting of the hosts in multipass.
 
