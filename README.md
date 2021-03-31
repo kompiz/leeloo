@@ -2,7 +2,7 @@
 
 Or: a poor man's vagrant.
 
-```$ ansible-playbook create-node.yml -K -e nodes=1``` creates one node. ```create-master.yml``` (for now) just creates a node with a different hostname.
+```$ ansible-playbook create-node.yml -K -e nodes=1``` creates one node, *k8s-node-123*. ```create-master.yml``` (for now) just creates a node with a different hostname, ie *k8s-master-123*.
 
 
 
