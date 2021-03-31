@@ -6,10 +6,20 @@ Or: a poor man's vagrant.
 
 
 
-Createinv: it creates an inventory for ansible, consisting of the hosts in multipass.
+```$ ansible-playbook create-inv.yml``` creates an inventory for ansible, consisting of the hosts in multipass.
 
 
 
 This right now is made to work on MacOS, but modifying the playbooks should be easy to make it run on your OS of choice. 
 
-As I want bridged mode for the vm's (that hopefully will work with Metallb - remains to be seen), the playbook also takes care of that. It does however take for granted that the current hypervisor is VirtualBox.
+
+
+
+### Prerequisites:
+
+* Multipass is installed
+* VirtualBox is installed
+* You're using VirtualBox as Multipass' hypervisor
+
+On macOS, this is done by running the following: ```$ sudo multipass set local.driver=virtualbox```
+Read more about this here: https://multipass.run/docs/using-virtualbox-in-multipass-macos
