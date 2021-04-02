@@ -29,6 +29,6 @@
 
   - name: Write inventory to file (watch out, relative paths)
     ansible.builtin.template:
-      src: templates/k8s-nodes.j2
-      dest: inventory/k8s-nodes.json
+      src: templates/k8s-inv.j2
+      dest: inventory/k8s-inv.json
       mode: '0644'
