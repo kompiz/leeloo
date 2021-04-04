@@ -10,6 +10,7 @@
 
 
 In ```roles/createvm/files/cloud-init.yml``` you might want to make some changes - put your username and public ssh key there.
+
 This right now is made to work on MacOS, but modifying the playbooks should be easy to make it run on your OS of choice. 
 
 
