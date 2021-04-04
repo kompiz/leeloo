@@ -9,7 +9,7 @@
 
 - name: Create a number of vm's depending on ext var nodes 
   ansible.builtin.shell: | 
-    multipass launch --name k8s-"{{ node_role }}"-"{{ item.ansible_facts.r_digits }}" --cloud-init "{{ role_path }}"/files/cloud-init.yml
+    multipass launch --name k3s-"{{ node_role }}"-"{{ item.ansible_facts.r_digits }}" --cloud-init "{{ role_path }}"/files/cloud-init.yml
   with_items: "{{ no_list.results }}"
   async: 600
   poll: 0    
@@ -29,7 +29,7 @@
 
 
 - name: Stop new so we can change network mode to bridged
-  ansible.builtin.command: multipass stop k8s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
+  ansible.builtin.command: multipass stop k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
   with_items: "{{ no_list.results }}"
 
 
@@ -41,7 +41,7 @@
 
 
 - name: Fix bridged mode for VM in hypervisor
-  ansible.builtin.command: VBoxManage modifyvm k8s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" --nic2 bridged --bridgeadapter2 en0
+  ansible.builtin.command: VBoxManage modifyvm k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" --nic2 bridged --bridgeadapter2 en0
   become: yes
   with_items: "{{ no_list.results }}"
   retries: 3
@@ -52,7 +52,7 @@
 
 
 - name: Start new VM
-  ansible.builtin.command: multipass start k8s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
+  ansible.builtin.command: multipass start k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
   become: yes
   with_items: "{{ no_list.results }}"
 
@@ -60,12 +60,12 @@
 
 - name: Put bridge conf into vm's
   ansible.builtin.shell: | 
-    multipass exec -- k8s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo bash -c "cat > /etc/netplan/60-bridge.yaml" < "{{ role_path }}"/files/bridge.conf
+    multipass exec -- k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo bash -c "cat > /etc/netplan/60-bridge.yaml" < "{{ role_path }}"/files/bridge.conf
   with_items: "{{ no_list.results }}"
 
 
 
 - name: Apply bridge conf
-  ansible.builtin.command: multipass exec k8s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo netplan apply
+  ansible.builtin.command: multipass exec k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo netplan apply
   with_items: "{{ no_list.results }}"
 

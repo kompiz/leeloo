@@ -1,8 +1,8 @@
-## A bunch of playbooks to make Multipass life easier
+## A bunch of playbooks to make Multipass and k3s life easier
 
-Or: a poor man's vagrant.
+(Or: a poor man's vagrant.)
 
-```$ ansible-playbook create-node.yml -K -e nodes=1``` creates one node, *k8s-node-123*. ```create-master.yml``` (for now) just creates a node with a different hostname, ie *k8s-master-123*.
+```$ ansible-playbook create-master.yml -K -e nodes=1``` creates one node, *k3s-master-123*. ```create-worker.yml``` creates a worker node. 
 
 
 
@@ -19,7 +19,8 @@ This right now is made to work on MacOS, but modifying the playbooks should be e
 
 * Multipass is installed
 * VirtualBox is installed
+* K3sup is installed
 * You're using VirtualBox as Multipass' hypervisor
 
-On macOS, this is done by running the following: ```$ sudo multipass set local.driver=virtualbox```
+For the last point: on macOS, this is done by running the following: ```$ sudo multipass set local.driver=virtualbox```
 Read more about this here: https://multipass.run/docs/using-virtualbox-in-multipass-macos

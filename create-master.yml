@@ -1,5 +1,5 @@
 ---
-- name: Create a bunch of vm's
+- name: Create k3s master
   hosts: localhost
   connection: local
   gather_facts: false

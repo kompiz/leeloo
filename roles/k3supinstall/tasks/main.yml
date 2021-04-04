@@ -1,0 +1,11 @@
+---
+- name: Install k3s
+  shell: k3sup install --host k3s-master-"{{ r_digits }}".local --user $USER --ssh-key ~/.ssh/id_rsa
+  when: node_role is search("master")
+
+- name: Join k3s node
+  shell: >
+    for i in $(multipass list | grep worker | tr -s ' ' | cut -f 3 -d ' '); do
+      k3sup join --ip $i --server-ip $(multipass list | grep master | tr -s ' ' | cut -f 3 -d ' ') --user $USER; 
+    done
+  when: node_role is search("worker")

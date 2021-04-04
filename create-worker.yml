@@ -1,9 +1,10 @@
 ---
-- name: Create a bunch of vm's
+- name: Create k3s-worker
   hosts: localhost
   connection: local
   gather_facts: false
   vars:
-    node_role: node 
+    node_role: worker
   roles:
     - createvm
+    - k3supinstall
