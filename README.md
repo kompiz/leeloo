@@ -11,7 +11,6 @@
 
 In ```roles/createvm/files/cloud-init.yml``` you might want to make some changes - put your username and public ssh key there.
 
-This right now is made to work on MacOS, but modifying the playbooks should be easy to make it run on your OS of choice. 
 
 
 
@@ -19,9 +18,8 @@ This right now is made to work on MacOS, but modifying the playbooks should be e
 ### Prerequisites:
 
 * Multipass is installed
-* VirtualBox is installed
 * K3sup is installed
-* You're using VirtualBox as Multipass' hypervisor
 
-For the last point: on macOS, this is done by running the following: ```$ sudo multipass set local.driver=virtualbox```
-Read more about this here: https://multipass.run/docs/using-virtualbox-in-multipass-macos
+
+Notes: v1.1 and before was using VirtualBox as hypervisor, but I couldn't get k3s nodes to talk to the master. If you would like to try, just uncomment the tasks in ```roles/createvm/tasks/main.yml```.
+

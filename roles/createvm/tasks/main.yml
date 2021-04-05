@@ -27,45 +27,46 @@
   with_items: "{{ create_vm_status.results }}"
 
 
-
-- name: Stop new so we can change network mode to bridged
-  ansible.builtin.command: multipass stop k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
-  with_items: "{{ no_list.results }}"
-
-
-
-- name: Pause for a bit so VboxManage doesn't get cranky
-  pause:
-    seconds: 1
-
-
-
-- name: Fix bridged mode for VM in hypervisor
-  ansible.builtin.command: VBoxManage modifyvm k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" --nic2 bridged --bridgeadapter2 en0
-  become: yes
-  with_items: "{{ no_list.results }}"
-  retries: 3
-  delay: 3
-  register: result
-  until: result.rc == 0
-
-
-
-- name: Start new VM
-  ansible.builtin.command: multipass start k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
-  become: yes
-  with_items: "{{ no_list.results }}"
-
-
-
-- name: Put bridge conf into vm's
-  ansible.builtin.shell: | 
-    multipass exec -- k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo bash -c "cat > /etc/netplan/60-bridge.yaml" < "{{ role_path }}"/files/bridge.conf
-  with_items: "{{ no_list.results }}"
-
-
-
-- name: Apply bridge conf
-  ansible.builtin.command: multipass exec k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo netplan apply
-  with_items: "{{ no_list.results }}"
-
+# Want to use VirtualBox as hypervisor for using bridged mode instead? Run "$ sudo multipass set local.driver=virtualbox" and uncomment the following:
+#
+#- name: Stop new so we can change network mode to bridged
+#  ansible.builtin.command: multipass stop k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
+#  with_items: "{{ no_list.results }}"
+#
+#
+#
+#- name: Pause for a bit so VboxManage doesn't get cranky
+#  pause:
+#    seconds: 1
+#
+#
+#
+#- name: Fix bridged mode for VM in hypervisor
+#  ansible.builtin.command: VBoxManage modifyvm k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" --nic2 bridged --bridgeadapter2 en0
+#  become: yes
+#  with_items: "{{ no_list.results }}"
+#  retries: 3
+#  delay: 3
+#  register: result
+#  until: result.rc == 0
+#
+#
+#
+#- name: Start new VM
+#  ansible.builtin.command: multipass start k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}"
+#  become: yes
+#  with_items: "{{ no_list.results }}"
+#
+#
+#
+#- name: Put bridge conf into vm's
+#  ansible.builtin.shell: | 
+#    multipass exec -- k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo bash -c "cat > /etc/netplan/60-bridge.yaml" < "{{ role_path }}"/files/bridge.conf
+#  with_items: "{{ no_list.results }}"
+#
+#
+#
+#- name: Apply bridge conf
+#  ansible.builtin.command: multipass exec k3s-"{{ node_role }}"-"{{item.ansible_facts.r_digits }}" sudo netplan apply
+#  with_items: "{{ no_list.results }}"
+#
