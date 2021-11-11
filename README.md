@@ -1,5 +1,8 @@
 ## A bunch of playbooks to make Multipass and k3s life easier
 
+**UPDATE: Don't use this - it's quite simply not the proper way of doing things (and in it's current state it's also broken). Either go with LXD instead or Vagrant. Only reason it remains up is for reference to some things in Ansible.**
+
+
 (Or: a poor man's vagrant.)
 
 ```$ ansible-playbook create-master.yml -K -e nodes=1``` creates one node, *k3s-master-123*. ```create-worker.yml``` creates a worker node. 
